@@ -12,6 +12,6 @@ class Person:
 
 Person("ran").say_hi()
 # 也可以用下面这种写法
-# p = Person("ran")
-# p.say_hi()
+p = Person("ran")
+p.say_hi()
 
