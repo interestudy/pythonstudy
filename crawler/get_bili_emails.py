@@ -6,6 +6,7 @@
 
 from selenium import webdriver
 import time
+import re
 from bs4 import BeautifulSoup
 from selenium.webdriver.chrome.options import Options
 
@@ -21,13 +22,21 @@ targetElem = driver.find_element_by_xpath("//div[@id='comment']")
 driver.execute_script("arguments[0].scrollIntoView();", targetElem)
 
 
+# 循环下一页
 for i in range(8):
     time.sleep(2)
-    driver.find_element_by_link_text(u'下一页').click()
-    time.sleep(2)
+    print(i)
+    if i is not 0:
+        driver.find_element_by_link_text(u'下一页').click()
+        time.sleep(2)
     html = driver.page_source
     soup = BeautifulSoup(html, features="html.parser")
-    print(soup.findAll('p', {'class': 'text'}))
+    ps = soup.findAll('p', {'class': 'text'})
+    # 循环取出列表内容
+    for j in range(len(ps)):
+        p_text = ps[j].get_text()
+        pattern = re.compile('[a-zA-Z0-9*]+@[a-zA-Z]+\.com')
+        print(pattern.findall(p_text))
 
 driver.close()
 
