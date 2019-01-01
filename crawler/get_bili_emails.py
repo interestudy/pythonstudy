@@ -3,48 +3,75 @@
 # @time      :2018-12-27 06:41
 # @File      :get_bili_emails.py
 # @Software  :PyCharm
-
-from selenium import webdriver
+import csv
 import time
 import re
 from bs4 import BeautifulSoup
+from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-# 不显示浏览器后台静默加载
-chrome_options = Options()
-chrome_options.add_argument("--headless")       # define headless
-driver = webdriver.Chrome(chrome_options=chrome_options)
 
-driver.get("https://www.bilibili.com/video/av21666145")
+# 启动selenium 不显示浏览器后台静默加载
+def get_driver(url):
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")  # define headless
+    driver = webdriver.Chrome(chrome_options=chrome_options)
+    driver.get(url)
+    return driver
+
 
 # 解决页面懒加载 执行通过执行javascript将页面滚动到指定元素
-targetElem = driver.find_element_by_xpath("//div[@id='comment']")
-driver.execute_script("arguments[0].scrollIntoView();", targetElem)
+def focus_target(driver):
+    target_elem = driver.find_element_by_xpath("//div[@id='comment']")
+    driver.execute_script("arguments[0].scrollIntoView();", target_elem)
 
-emails = list()
 
-# 循环下一页
-for i in range(8):
-    time.sleep(5)   # 停止5s等待网络加载
-    # 跳过第一页
-    if i is not 0:
-        driver.find_element_by_link_text(u'下一页').click()
-        time.sleep(5)
+def make_csv():
+    csv_file = open("/Users/ran/data/emails.csv", 'wt', newline="", encoding='utf-8')
+    write = csv.writer(csv_file)
+    return write
 
-    html = driver.page_source
-    soup = BeautifulSoup(html, features="html.parser")
-    ps = soup.findAll('p', {'class': 'text'})
 
-    # 遍历列表
-    for p in ps:
+def get_emails(ps, emails):
+    for p in ps:    # 遍历列表
         p_text = p.get_text()
         # 用正则表达式匹配并取出评论中的邮箱
         pattern = re.compile('[a-zA-Z0-9*]+@[a-zA-Z0-9]+\.com')
         email = pattern.findall(p_text)
         if email is not None:  # 有些评论没有邮箱 跳过添加到列表
             emails.extend(email)
+    return emails
 
 
-print(emails)
-driver.close()
+# 获取评论列表
+def get_p(driver):
+    html = driver.page_source
+    soup = BeautifulSoup(html, features="html.parser")
+    ps = soup.findAll('p', {'class': 'text'})
+    return ps
+
+
+def main():
+    url = "https://www.bilibili.com/video/av21666145"
+    emails = list()
+
+    driver = get_driver(url)
+    focus_target(driver)
+    # 循环下一页
+    for i in range(8):
+        print('正在执行完第{}页,请稍等......'.format(i))
+        time.sleep(5)  # 停止5s等待网络加载
+        if i is not 0:  # 跳过第一页
+            driver.find_element_by_link_text(u'下一页').click()
+            time.sleep(5)
+        ps = get_p(driver)
+        emails = get_emails(ps, emails)
+
+    make_csv().writerow(emails)
+    driver.close()
+
+
+if __name__ == '__main__':
+    main()
+
 
