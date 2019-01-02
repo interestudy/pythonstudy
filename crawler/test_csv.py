@@ -1,7 +1,7 @@
 # _*_ coding:utf-8 _*_
 # @Author    :ran
 # @time      :2018-12-17 15:47
-# @File      :test_cvs.py
+# @File      :test_csv.py
 # @Software  :PyCharm
 
 # 测试csv保存数据的方式 以维基百科为例

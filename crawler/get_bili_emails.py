@@ -27,7 +27,8 @@ def focus_target(driver):
 
 
 def make_csv():
-    csv_file = open("/Users/ran/data/emails.csv", 'wt', newline="", encoding='utf-8')
+    csv_file = open("/Users/ran/data/bilibili_emails.csv",
+                    'wt', newline="", encoding='utf-8')
     write = csv.writer(csv_file)
     return write
 
@@ -51,13 +52,8 @@ def get_p(driver):
     return ps
 
 
-def main():
-    url = "https://www.bilibili.com/video/av21666145"
-    emails = list()
-
-    driver = get_driver(url)
-    focus_target(driver)
-    # 循环下一页
+# 循环下一页
+def net_page(driver, emails):
     for i in range(8):
         print('正在执行完第{}页,请稍等......'.format(i))
         time.sleep(5)  # 停止5s等待网络加载
@@ -66,12 +62,19 @@ def main():
             time.sleep(5)
         ps = get_p(driver)
         emails = get_emails(ps, emails)
+    return emails
 
+
+def main():
+    url = "https://www.bilibili.com/video/av21666145"
+    emails = list()
+
+    driver = get_driver(url)
+    focus_target(driver)
+    emails = net_page(driver, emails)
     make_csv().writerow(emails)
     driver.close()
 
 
 if __name__ == '__main__':
     main()
-
-
