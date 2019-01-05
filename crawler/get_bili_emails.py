@@ -10,8 +10,8 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 '''
-曾经我在bilibili上面发了个视频， 很多朋友留下邮箱需要曲谱，
-不想一页一页的手动复制，就尝试着用python来解决问题，
+曾在B站上传视频，好多人留下邮箱要曲谱，
+运行这个小爬虫 把邮箱用csv格式保存下来
 
 1.用selenium 控制浏览器请求，
 2.解决页面懒加载的问题
