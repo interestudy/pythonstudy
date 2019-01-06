@@ -37,11 +37,11 @@ def focus_target(driver):
     driver.execute_script("arguments[0].scrollIntoView();", target_elem)
 
 
-def make_csv():
+def make_csv(emails):  # 保存邮箱到电脑
     csv_file = open("/Users/ran/data/bilibili_emails.csv",
                     'wt', newline="", encoding='utf-8')
     write = csv.writer(csv_file)
-    return write
+    write.writerow(emails)
 
 
 def get_emails(ps, emails):
@@ -55,20 +55,18 @@ def get_emails(ps, emails):
     return emails
 
 
-# 获取评论列表
-def get_p(driver):
+def get_p(driver):  # 获取评论列表
     html = driver.page_source
     soup = BeautifulSoup(html, features="html.parser")
     ps = soup.findAll('p', {'class': 'text'})
     return ps
 
 
-# 循环下一页 取出所有email
-def net_page(driver, emails):
+def next_page(driver, emails):  # 循环下一页 取出所有email
     for i in range(8):
         print('正在执行完第{}页,请稍等......'.format(i))
         time.sleep(5)  # 停止5s等待网络加载
-        if i is not 0:  # 跳过第一页
+        if i is not 0:  # 跳过首页
             driver.find_element_by_link_text(u'下一页').click()
             time.sleep(5)
         ps = get_p(driver)
@@ -82,8 +80,8 @@ def main():
 
     driver = get_driver(url)
     focus_target(driver)
-    emails = net_page(driver, emails)
-    make_csv().writerow(emails)
+    emails = next_page(driver, emails)
+    make_csv(emails)
     driver.close()
 
 
