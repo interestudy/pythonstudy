@@ -15,10 +15,8 @@ class NeuralNetwork:
         self.onodes = outputnodes
 
         # 初始化权重
-        self.wih = np.random.normal(0.0, pow(self.hnodes, -0.5),
-                                    (self.hnodes, self.inodes))
-        self.who = np.random.normal(0.0, pow(self.onodes, -0.5),
-                                    (self.onodes, self.hnodes))
+        self.wih = np.random.normal(0.0, pow(self.hnodes, -0.5), (self.hnodes, self.inodes))
+        self.who = np.random.normal(0.0, pow(self.onodes, -0.5), (self.onodes, self.hnodes))
         self.lr = learningrate
 
         self.activation_function = lambda x: scipy.special.expit(x)
