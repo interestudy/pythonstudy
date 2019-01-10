@@ -13,20 +13,21 @@ test_data_file = open("mnist_train_100.csv", "r")
 test_data_list = test_data_file.readlines()
 test_data_file.close()
 
+# 新建一个神经网络 从训练好的神经网络中更新权重
+n_ = NeuralNetwork(784, 100, 10, 0.2)
+n_.who = np.load('who.npy')
+n_.wih = np.load('wih.npy')
+
 scorecard = []
 
 for record in test_data_list:
     all_values = record.split(',')
     correct_label = int(all_values[0])
     print(correct_label, "correct label")
+
     inputs = (np.asfarray(all_values[1:]) / 255.0 * 0.99) + 0.01
-
-    # 新建一个神经网络 从训练好的神经网络中更新权重
-    n_ = NeuralNetwork(784, 100, 10, 0.2)
-    n_.who = np.load('who.npy')
-    n_.wih = np.load('wih.npy')
-
     outputs = n_.query(inputs)
+
     label = np.argmax(outputs)
     print(label, "network's answer")
 
