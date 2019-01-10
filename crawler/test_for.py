@@ -27,9 +27,14 @@ print(x_)
 y_ = [[int(x0 + x1 < 1)] for (x0, x1) in x_]
 # y = [[x0] for(x0, x1) in x_]
 print(y_)
+print("------------------------")
 
 # 真是1 假是0 int函数可以用来判断
 print(int(3 < 5))
 print(int(False))
 print(int(True))
+
+# 将列表转换维2数组并进行转置
+node = np.array([1, 2, 3], ndmin=2).T
+print(node.shape)
 

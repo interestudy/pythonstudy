@@ -28,3 +28,7 @@ for record in training_data_list:
     n.train(inputs, targets)
     print("is training...")
 
+# 保存权重 方便测试使用(训练好的权重是神经网络的核心)
+np.save('who.npy', n.who)
+np.save('wih.npy', n.wih)
+
