@@ -5,7 +5,9 @@
 # @Software  :PyCharm
 import numpy as np
 import scipy.special
-'''Python基础知识编写的神经网络模型'''
+'''
+Python基础知识编写的神经网络模型
+'''
 
 
 class NeuralNetwork:

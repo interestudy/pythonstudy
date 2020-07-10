@@ -19,7 +19,6 @@ something = input('Enter text: ')
 
 # 判断并执行输出
 if is_palindrome(something):
-
     print('its a palindrome')
 else:
     print('its not a palindrome')

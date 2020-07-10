@@ -27,21 +27,24 @@ def get_driver(url):
     chrome_options = Options()
     chrome_options.add_argument("--headless")  # define headless
     driver = webdriver.Chrome(chrome_options=chrome_options)
+    # driver = webdriver.Chrome()
     driver.get(url)
     return driver
 
 
 # 解决页面懒加载 执行通过执行javascript将页面滚动到指定元素
 def focus_target(driver):
+    time.sleep(5)
     target_elem = driver.find_element_by_xpath("//div[@id='comment']")
     driver.execute_script("arguments[0].scrollIntoView();", target_elem)
+    print("已锁定")
 
 
 def make_csv(emails):  # 保存邮箱到电脑
-    csv_file = open("/Users/ran/data/bilibili_emails.csv",
-                    'wt', newline="", encoding='utf-8')
-    write = csv.writer(csv_file)
-    write.writerow(emails)
+    with open("/Users/ran/data/bilibili_emails.csv", 'wt',
+              newline="", encoding='utf-8') as csv_file:
+        write = csv.writer(csv_file)
+        write.writerow(emails)
 
 
 def get_emails(ps, emails):
