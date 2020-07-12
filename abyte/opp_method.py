@@ -3,10 +3,12 @@ class Person:
         print('Hello, how are you?')
         print(self)
         print(self.__class__)
-
-
-p = Person()
-p.say_hi()
+    
+    def __init__(self, name):
+    	self.name = name
+p = Person('bitch')
+print(p.name)
+# p.say_hi()
 # 前面两行同样可以写作
 # Person().say_hi()
 # 这里我们就能看见 self 是如何行动的了。要注意到
